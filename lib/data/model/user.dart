@@ -50,4 +50,7 @@ class User {
       "birthDate": birthDate,
     };
   }
+
+  User.fromJson(Map<String, dynamic> json)
+      : this.short(username: json['username'], password: json['password']);
 }

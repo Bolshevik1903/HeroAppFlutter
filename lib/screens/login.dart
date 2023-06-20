@@ -1,72 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:superhero_flutter/data/remote/http_helper.dart';
+
+import '../data/remote/user_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
+
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final httpHelper = HttpHelper();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _userService = UserService();
   String _token = '';
 
-  loginApp() async {
-    final result = await httpHelper.login(
-        usernameController.text, passwordController.text);
-
+  testAuthentication() async {
+    final result = await _userService.test(_token);
     if (result != null) {
-      print(result.token);
-      _token = result.token;
+      print('Token: $_token');
+      print('Total users ${result.length}');
     }
   }
 
-  testAuth() async {
-    final result = await httpHelper.test(_token);
-    result?.length;
+  createUser() async {
+    final result = await _userService.login(
+        _usernameController.text, _passwordController.text);
+
     if (result != null) {
-      print("Token: ${_token}");
-      print("Total users ${result.length}");
+      _token = result.token;
     }
   }
 
   @override
   void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          TextField(
-            controller: usernameController,
-            onChanged: (value) {},
-          ),
-          TextField(
-            controller: passwordController,
-            onChanged: (value) {},
-          ),
-          OutlinedButton(
-            onPressed: () {
-              loginApp();
-            },
-            child: const Text("Sign In"),
-          ),
-          OutlinedButton(
-            onPressed: () {
-              testAuth();
-            },
-            child: const Text("Test Auth"),
-          ),
-        ],
-      ),
-    ));
+        appBar: AppBar(
+          title: const Text('SuperHero'),
+        ),
+        body: Column(
+          children: [
+            TextField(
+              controller: _usernameController,
+              onChanged: (value) {},
+            ),
+            TextField(
+              controller: _passwordController,
+              onChanged: (value) {},
+            ),
+            OutlinedButton(
+              onPressed: () {
+                createUser();
+              },
+              child: const Text('Sign up'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                testAuthentication();
+              },
+              child: const Text('Sign up'),
+            )
+          ],
+        ));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:superhero_flutter/screens/login.dart';
+import 'package:superhero_flutter/screens/search_heroes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,9 +12,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Login(),
-        ),
+        body: SearchHeros(),
       ),
     );
   }
